@@ -44,11 +44,12 @@ def check_running(endpoint='controls', on_stop=False):
         return inner
     return outer
 
-
+# search and display directory listing
 @app.route('/', defaults={"path": "Downloads"})
 @app.route('/explore/<path:path>')
 @check_running()
 def explore(path):
+    print("expliring directory "+str(path))
     directories = []
     files = []
     internal_path = os.path.join(app.user_home, path)
@@ -70,10 +71,11 @@ def explore(path):
     parent = (parent, os.path.basename(parent))
     directories.sort(key=natural_key)
     files.sort(key=natural_key)
+    print("done exploring")
     return render_template('listing.html', files=files,
                            directories=directories, title=parent)
 
-
+# natural key for sorting
 def natural_key(string_):
     """See http://www.codinghorror.com/blog/archives/001018.html"""
     return [int(s) if s.isdigit() else s for s in re.split(r'(\d+)',
@@ -83,6 +85,7 @@ def natural_key(string_):
 @app.route('/play/<path:path>')
 @check_running()
 def play(path):
+    print("playing... "+str(path))
     full_path = os.path.join(app.user_home, path)
     if not g.mplayer.check_fifo():
         session['filename'] = full_path
@@ -93,6 +96,7 @@ def play(path):
 
 @app.route('/sub/<path:path>')
 def sub(path):
+    print("looking for subs")
     full_path = unicode(os.path.join(app.user_home, path))
     if not have_subliminal:
         return 'subliminal is required for this.\
@@ -112,19 +116,25 @@ def sub(path):
 @app.route('/controls')
 @check_running('explore', on_stop=True)
 def controls():
+    print("loading controls")
     return render_template('controls.html')
 
 
 @app.route('/command/', methods=['POST'])
 def command():
     cmd = request.form['cmd']
+    print("processing command "+str(cmd))    
     g.mplayer.send_cmd(cmd)
     redirect = False
-    if cmd == 'quit':
+    print('here')
+    if cmd == "quit":
+        print("here2")
+        cleanup()
         redirect = url_for('explore')
     return json.dumps({"redirect": redirect})
 
 def cleanup(fifo_path='/tmp/mplayer-fifo.sock'):
+    print("cleaning up")
     try:
         os.unlink(fifo_path)
     except OSError:
