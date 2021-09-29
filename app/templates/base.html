@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="initial-scale=1.0 maximum-scale=1.0" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    {% if title %}
+      <title>{{ title }} - Littl3.1</title>
+    {% else %}
+      <title>Remote Control - Littl3.1</title>
+    {% endif %}
+    <link rel="icon" type="image/png" href="/static/littl31_logo_blue_ic.png">
+    <link rel="stylesheet" href="http://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.css" />
+    <script src="http://code.jquery.com/jquery-1.10.2.min.js"></script>
+    <script src="http://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.js"></script>
+    <script type="text/javascript" src="/static/code.js"></script>
+  </head>
+  <body>
+    <div data-role="page">
+      <div data-role="header">
+        <h1>Remote Control</h1>
+      </div>
+      <div data-role="controlgroup">
+        <a href="http://192.168.1.102:5001" class="ui-btn ui-btn-inline">Projector 1</a>
+        <a href="http://192.168.1.201:5001" class="ui-btn ui-btn-inline">Projector 2</a>
+        <a href="http://192.168.1.202:5001" class="ui-btn ui-btn-inline">Projector 3</a>
+      </div>      
+      <div data-role="content">
+        {% block main %}{% endblock %}
+      </div>
+    </div>
+    <div data-role="footer">
+      <h4>&copy; 2021 Littl3.1 https://littl31.com</h4>
+    </div>
+  </body>
+</html>

@@ -6,28 +6,13 @@ from functools import wraps
 import os
 import mplayer
 import re
-import logging
-try:
-    import subliminal
-    have_subliminal = True
-except ImportError:
-    have_subliminal = False
-
-logging.basicConfig(level=logging.DEBUG,
-                    format='%(levelname)-8s %(asctime)s %(message)s',
-                    datefmt='%Y-%m-%d %H:%M:%S')
-
-app = Flask(__name__)
-app.user_home = os.path.expanduser("~")
-app.secret_key = "ASD"
-
+from app import app
 
 @app.before_request
 def get_mplayer():
     g.mplayer = mplayer.Mplayer()
     g.extensions = ('.avi', '.mp4', '.m4a', '.mov', '.mpg', '.mpeg',
                     '.ogg', '.flac', '.mkv')
-
 
 def check_running(endpoint='controls', on_stop=False):
     def outer(f):
@@ -45,14 +30,15 @@ def check_running(endpoint='controls', on_stop=False):
     return outer
 
 # search and display directory listing
-@app.route('/', defaults={"path": "Downloads"})
+@app.route('/', defaults={"path": "Downloads"}, methods=['GET','POST'])
+@app.route('/index', methods=['GET','POST'])
 @app.route('/explore/<path:path>')
 @check_running()
 def explore(path):
-    print("exploring directory "+str(path))
+    app.logger.info("Exploring directory "+str(path))
     directories = []
     files = []
-    internal_path = os.path.join(app.user_home, path)
+    internal_path = os.path.join(app.config['USER_HOME'], path)
     for content in os.listdir(internal_path):
         fullpath = os.path.join(internal_path, content)
         if os.path.isdir(fullpath) and not content.startswith('.'):
@@ -64,6 +50,8 @@ def explore(path):
                 sub_exists = os.path.exists(os.path.join(
                     internal_path, content.replace(ext, '.srt')))
                 files.append((filepath, content, sub_exists))
+    
+    app.logger.info("Found things")
 
     parent = list(os.path.split(path))
     parent.pop()
@@ -71,7 +59,8 @@ def explore(path):
     parent = (parent, os.path.basename(parent))
     directories.sort(key=natural_key)
     files.sort(key=natural_key)
-    print("done exploring")
+
+    app.logger.info("done exploring")
     return render_template('listing.html', files=files,
                            directories=directories, title=parent)
 
@@ -81,65 +70,48 @@ def natural_key(string_):
     return [int(s) if s.isdigit() else s for s in re.split(r'(\d+)',
                                                            string_[0])]
 
-
 @app.route('/play/<path:path>')
 @check_running()
 def play(path):
-    print("playing... "+str(path))
-    full_path = os.path.join(app.user_home, path)
+    app.logger.info("playing... "+str(path))
+    full_path = os.path.join(app.config['USER_HOME'], path)
     if not g.mplayer.check_fifo():
         session['filename'] = full_path
         g.mplayer.load_file(full_path)
         g.mplayer.start()
     return redirect(url_for('controls'))
 
-
-@app.route('/sub/<path:path>')
-def sub(path):
-    print("looking for subs")
-    full_path = unicode(os.path.join(app.user_home, path))
-    if not have_subliminal:
-        return 'subliminal is required for this.\
-                please try "# pip install subliminal"'
-
-    with subliminal.Pool(8) as pool:
-        results = pool.download_subtitles([full_path], ['es'],
-                                          cache_dir='/tmp/', force=True)
-
-    if results:
-        return 'subtitle downloaded for %s, now play it %s'\
-            % (path, url_for('play', path=path))
-    else:
-        return 'no subtitles'
-
-
 @app.route('/controls')
 @check_running('explore', on_stop=True)
 def controls():
-    print("loading controls")
+    app.logger.info("loading controls")
     return render_template('controls.html')
-
 
 @app.route('/command/', methods=['POST'])
 def command():
     cmd = request.form['cmd']
-    print("processing command "+str(cmd))    
+    app.logger.info("processing command "+str(cmd))    
     g.mplayer.send_cmd(cmd)
     redirect = False
-    print('here')
+    #print('here')                                          #DEBUG
     if cmd == "quit":
-        print("here2")
+        #print("here2")                                     #DEBUG
         cleanup()
         redirect = url_for('explore')
     return json.dumps({"redirect": redirect})
 
+@app.route('/projector', methods=['GET','POST'])
+def projector():    
+    projector_idx = request.form['cmd']    
+    app.logger.info("Routing to projector "+str(projector_idx))
+    app.logger.info('http://'+app.config['PROJECTOR_'+str(projector_idx)]+':5001')
+    #print('PROJECTOR_'+str(projector_idx))                 #DEBUG
+    #print(app.config['PROJECTOR_'+str(projector_idx)])     #DEBUG
+    return redirect('http://'+app.config['PROJECTOR_'+str(projector_idx)]+':5001')    
+
 def cleanup(fifo_path='/tmp/mplayer-fifo.sock'):
-    print("cleaning up")
+    app.logger.info("cleaning up")
     try:
         os.unlink(fifo_path)
     except OSError:
         pass
-
-if __name__ == "__main__":
-    cleanup()
-    app.run(debug=True, host='0.0.0.0')

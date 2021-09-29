@@ -1,6 +1,6 @@
 import subprocess
 import os
-
+from app import app
 
 class Mplayer(object):
 
@@ -22,35 +22,35 @@ class Mplayer(object):
         ]
 
     def load_file(self, filename):
-        print("loading file")
+        app.logger.info("loading file")
         self.filename = filename
         return self
 
     def check_fifo(self):
-        print("checking fifo")
+        app.logger.info("checking fifo")
         return os.path.exists(self.fifo_path)
 
     def remove_fifo(self):
-        print("removing fifo")
+        app.logger.info("removing fifo")
         try:
             os.unlink(self.fifo_path)
         except OSError as e:
-            print("OSError:")
-            print(e)
+            app.logger.warn("OSError:")
+            app.logger.warn(e)
             pass
 
     def start(self):
-        print("mplayer starting")
+        app.logger.info("mplayer starting")
         self.remove_fifo()
         os.mkfifo(self.fifo_path)
-        print("starting subprocess")
-        print(self.arguments + [self.filename])
+        app.logger.info("starting subprocess")
+        #print(self.arguments + [self.filename])   # DEBUG
         self.p = subprocess.Popen(self.arguments + [self.filename])
-        print(self.p)
+        #print(self.p)  #DEBUG
         return self
 
     def send_cmd(self, *args):
-        print("sending cmd to mplayer")
+        app.logger.info("sending cmd to mplayer")
         with open(self.fifo_path, 'w') as sock:
             cmd = " ".join(args)
             sock.write("%s\n" % cmd)
