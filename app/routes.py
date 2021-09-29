@@ -4,9 +4,9 @@ from flask import Flask, render_template, g,\
     redirect, url_for, session, request, json, make_response
 from functools import wraps
 import os
-import mplayer
+#import mplayer
 import re
-from app import app
+from app import app,mplayer
 
 @app.before_request
 def get_mplayer():

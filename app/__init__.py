@@ -21,4 +21,4 @@ app.logger.setLevel(logging.INFO)
 
 app.logger.info("ROZ flask startup")
 
-from app import routes
+from app import routes, mplayer
