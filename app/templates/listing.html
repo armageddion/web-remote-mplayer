@@ -1,7 +1,8 @@
 {% extends 'base.html' %}
 {% block main %}
+<h2>Play One</h2>
 {% if title[0] %}
-<h2><a class="dir ui-btn ui-icon-arrow-l ui-btn-icon-left" href='{{url_for('explore', path=title[0])}}'>{{title[1]}}</a></h2>
+<h3><a class="dir ui-btn ui-icon-arrow-l ui-btn-icon-left" href='{{url_for('explore', path=title[0])}}'>{{title[1]}}</a></h3>
 {% endif %}
 <ul data-role="listview">
 {% for base, directory in directories: %}
@@ -14,5 +15,11 @@
 <li data-icon="gear"><a class="dir" href="{{url_for('play', path=base)}}">{{_file}}</a></li>
 {% endif %}
 {% endfor %}
+</ul>
+<h2>Play Many</h2>
+<ul data-role="listview">
+    <li data-icon="gear"><a href="{{url_for('playset')}}" class="ajax ui-btn" data-cmd=1>Play set 1</a>
+    <li data-icon="gear"><a href="{{url_for('playset')}}" class="ajax ui-btn" data-cmd=2>Play set 2</a>
+    <li data-icon="gear"><a href="{{url_for('playset')}}" class="ajax ui-btn" data-cmd=3>Play set 3</a>
 </ul>
 {% endblock %}

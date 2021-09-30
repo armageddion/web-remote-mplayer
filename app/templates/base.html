@@ -10,8 +10,10 @@
       <title>Remote Control - Littl3.1</title>
     {% endif %}
     <link rel="icon" type="image/png" href="/static/littl31_logo_blue_ic.png">
-    <link rel="stylesheet" href="http://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.css" />
-    <script src="http://code.jquery.com/jquery-1.10.2.min.js"></script>
+    <link rel="stylesheet" href="/static/themes/zindor.min.css" />
+    <link rel="stylesheet" href="/static/themes/jquery.mobile.icons.min.css" />
+    <link rel="stylesheet" href="http://code.jquery.com/mobile/1.4.5/jquery.mobile.structure-1.4.5.min.css" />
+    <script src="http://code.jquery.com/jquery-1.11.1.min.js"></script>
     <script src="http://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.js"></script>
     <script type="text/javascript" src="/static/code.js"></script>
   </head>
@@ -20,14 +22,20 @@
       <div data-role="header">
         <h1>Remote Control</h1>
       </div>
-      <div data-role="controlgroup">
-        <a href="http://192.168.1.102:5001" class="ui-btn ui-btn-inline">Projector 1</a>
-        <a href="http://192.168.1.201:5001" class="ui-btn ui-btn-inline">Projector 2</a>
-        <a href="http://192.168.1.202:5001" class="ui-btn ui-btn-inline">Projector 3</a>
+      <div data-role="navbar">
+        <ul>
+          <li><a href="{{ config.PROJECTOR_1 }}" class="ui-btn ui-btn-inline">Projector 1</a></li>
+          <li><a href="{{ config.PROJECTOR_2 }}" class="ui-btn ui-btn-inline">Projector 2</a></li>
+          <li><a href="{{ config.PROJECTOR_3 }}" class="ui-btn ui-btn-inline">Projector 3</a></li>
+        </ul>
       </div>      
       <div data-role="content">
         {% block main %}{% endblock %}
       </div>
+      <div data-role="controlgroup" data-type="horizontal">
+        <a href="{{ url_for('ctrl') }}" class="ajax ui-btn ui-btn-inline ui-btn-b" data-cmd="clean">clean</a>
+        <a href="{{ url_for('ctrl') }}" class="ajax ui-btn ui-btn-inline ui-btn-b" data-cmd="nuke">NUKE</a>
+      </div>       
       <div data-role="footer" data-position="fixed">
         <h4>&copy; 2021 <a href="https://littl31.com">Littl3.1</a></h4>        
       </div>      

@@ -4,7 +4,7 @@ from flask import Flask, render_template, g,\
     redirect, url_for, session, request, json, make_response
 from functools import wraps
 import os
-#import mplayer
+import requests
 import re
 from app import app,mplayer
 
@@ -70,6 +70,7 @@ def natural_key(string_):
     return [int(s) if s.isdigit() else s for s in re.split(r'(\d+)',
                                                            string_[0])]
 
+# play a video in path
 @app.route('/play/<path:path>')
 @check_running()
 def play(path):
@@ -81,12 +82,14 @@ def play(path):
         g.mplayer.start()
     return redirect(url_for('controls'))
 
+# display playback controls
 @app.route('/controls')
 @check_running('explore', on_stop=True)
 def controls():
     app.logger.info("loading controls")
     return render_template('controls.html')
 
+# process playback controll commands
 @app.route('/command/', methods=['POST'])
 def command():
     cmd = request.form['cmd']
@@ -95,19 +98,38 @@ def command():
     redirect = False
     #print('here')                                          #DEBUG
     if cmd == "quit":
-        #print("here2")                                     #DEBUG
+        #print("here2")                                      #DEBUG
         cleanup()
         redirect = url_for('explore')
     return json.dumps({"redirect": redirect})
 
-@app.route('/projector', methods=['GET','POST'])
-def projector():    
-    projector_idx = request.form['cmd']    
-    app.logger.info("Routing to projector "+str(projector_idx))
-    app.logger.info('http://'+app.config['PROJECTOR_'+str(projector_idx)]+':5001')
-    #print('PROJECTOR_'+str(projector_idx))                 #DEBUG
-    #print(app.config['PROJECTOR_'+str(projector_idx)])     #DEBUG
-    return redirect('http://'+app.config['PROJECTOR_'+str(projector_idx)]+':5001')    
+# play a predefined collection of videos on all outputs at once
+@app.route('/playset/', methods=['POST'])
+@check_running()
+def playset():
+    vidset = request.form['cmd']
+    app.logger.info("playing vidset: "+str(vidset))
+    print(type(vidset))     #DEBUG
+    if vidset == '1':
+        r1 = requests.get(app.config['PROJECTOR_1']+'/play/Downloads/Muse.mp4')
+        r2 = requests.get(app.config['PROJECTOR_2']+'/play/Downloads/Hex_Original.mp4')
+        #r3 = requests.get(app.config['PROJECTOR_2']+'/play/')        
+
+    return json.dumps({"redirect": (url_for('explore'))})   
+
+# administrative routes for just in case
+@app.route('/ctrl/', methods=['POST'])
+def ctrl():
+    cmd = request.form['cmd']
+    app.logger.info("processing ctrl command "+str(cmd))        
+    if cmd == "clean":
+        # OS remove fifo file
+        g.mplayer.remove_fifo()
+    if cmd == "nuke":
+        #reboot system
+        os.system('sudo reboot')
+
+    return json.dumps({"redirect": (url_for('explore'))})
 
 def cleanup(fifo_path='/tmp/mplayer-fifo.sock'):
     app.logger.info("cleaning up")
