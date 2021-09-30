@@ -1,5 +1,4 @@
 # Web Remote MPlayer
-==================
 
 This nugget is forked from Nassty/web-remote-mplayer
 
