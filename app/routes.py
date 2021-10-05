@@ -125,10 +125,10 @@ def ctrl():
     if cmd == "clean":
         # OS remove fifo file
         g.mplayer.remove_fifo()
-	if cmd == "cleanall":
-		requests.post(app.config['PROJECTOR_1']+'/ctrl/', data={"cmd": "clean"})
-		requests.post(app.config['PROJECTOR_2']+'/ctrl/', data={"cmd": "clean"})
-		requests.post(app.config['PROJECTOR_3']+'/ctrl/', data={"cmd": "clean"})
+    if cmd == "cleanall":
+        requests.post(app.config['PROJECTOR_1']+'/ctrl/', data={"cmd": "clean"})
+        requests.post(app.config['PROJECTOR_2']+'/ctrl/', data={"cmd": "clean"})
+        requests.post(app.config['PROJECTOR_3']+'/ctrl/', data={"cmd": "clean"})
     if cmd == "nuke":
         #reboot system
         os.system('sudo reboot')
