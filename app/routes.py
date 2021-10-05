@@ -115,6 +115,11 @@ def playset():
         r2 = requests.get(app.config['PROJECTOR_2']+'/play/Downloads/Hex_Original.mp4')
         r3 = requests.get(app.config['PROJECTOR_3']+'/play/Downloads/Hex_Original.mp4')
 
+    if vidset == '2':
+        r1 = requests.get(app.config['PROJECTOR_1']+'/play/Downloads/ROZ_2_4_Tolaan_Cam_1_Test.mov')
+        r2 = requests.get(app.config['PROJECTOR_2']+'/play/Downloads/ROZ_2_4_Krinu_Cam_2_Test.mov')
+        r3 = requests.get(app.config['PROJECTOR_3']+'/play/Downloads/ROZ_2_4_Ubo_Cam_3_Test.mov')
+
     return json.dumps({"redirect": (url_for('explore'))})
 
 # administrative routes for just in case
