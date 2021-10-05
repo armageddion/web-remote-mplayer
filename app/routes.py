@@ -50,7 +50,7 @@ def explore(path):
                 sub_exists = os.path.exists(os.path.join(
                     internal_path, content.replace(ext, '.srt')))
                 files.append((filepath, content, sub_exists))
-    
+
     app.logger.info("Found things")
 
     parent = list(os.path.split(path))
@@ -93,7 +93,7 @@ def controls():
 @app.route('/command/', methods=['POST'])
 def command():
     cmd = request.form['cmd']
-    app.logger.info("processing command "+str(cmd))    
+    app.logger.info("processing command "+str(cmd))
     g.mplayer.send_cmd(cmd)
     redirect = False
     #print('here')                                          #DEBUG
@@ -111,17 +111,17 @@ def playset():
     app.logger.info("playing vidset: "+str(vidset))
     print(type(vidset))     #DEBUG
     if vidset == '1':
-        r1 = requests.get(app.config['PROJECTOR_1']+'/play/Downloads/Muse.mp4')
+        r1 = requests.get(app.config['PROJECTOR_1']+'/play/Downloads/Hex_Original.mp4')
         r2 = requests.get(app.config['PROJECTOR_2']+'/play/Downloads/Hex_Original.mp4')
-        #r3 = requests.get(app.config['PROJECTOR_2']+'/play/')        
+        r3 = requests.get(app.config['PROJECTOR_2']+'/play/Downloads/Hex_Original.mp4')        
 
-    return json.dumps({"redirect": (url_for('explore'))})   
+    return json.dumps({"redirect": (url_for('explore'))})
 
 # administrative routes for just in case
 @app.route('/ctrl/', methods=['POST'])
 def ctrl():
     cmd = request.form['cmd']
-    app.logger.info("processing ctrl command "+str(cmd))        
+    app.logger.info("processing ctrl command "+str(cmd))
     if cmd == "clean":
         # OS remove fifo file
         g.mplayer.remove_fifo()
