@@ -113,7 +113,7 @@ def playset():
     if vidset == '1':
         r1 = requests.get(app.config['PROJECTOR_1']+'/play/Downloads/Hex_Original.mp4')
         r2 = requests.get(app.config['PROJECTOR_2']+'/play/Downloads/Hex_Original.mp4')
-        r3 = requests.get(app.config['PROJECTOR_2']+'/play/Downloads/Hex_Original.mp4')        
+        r3 = requests.get(app.config['PROJECTOR_3']+'/play/Downloads/Hex_Original.mp4')        
 
     return json.dumps({"redirect": (url_for('explore'))})
 
