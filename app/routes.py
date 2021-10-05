@@ -113,7 +113,7 @@ def playset():
     if vidset == '1':
         r1 = requests.get(app.config['PROJECTOR_1']+'/play/Downloads/Hex_Original.mp4')
         r2 = requests.get(app.config['PROJECTOR_2']+'/play/Downloads/Hex_Original.mp4')
-        r3 = requests.get(app.config['PROJECTOR_3']+'/play/Downloads/Hex_Original.mp4')        
+        r3 = requests.get(app.config['PROJECTOR_3']+'/play/Downloads/Hex_Original.mp4')
 
     return json.dumps({"redirect": (url_for('explore'))})
 
@@ -125,6 +125,10 @@ def ctrl():
     if cmd == "clean":
         # OS remove fifo file
         g.mplayer.remove_fifo()
+	if cmd == "cleanall":
+		requests.post(app.config['PROJECTOR_1']+'/ctrl/', data={"cmd": "clean"})
+		requests.post(app.config['PROJECTOR_2']+'/ctrl/', data={"cmd": "clean"})
+		requests.post(app.config['PROJECTOR_3']+'/ctrl/', data={"cmd": "clean"})
     if cmd == "nuke":
         #reboot system
         os.system('sudo reboot')
