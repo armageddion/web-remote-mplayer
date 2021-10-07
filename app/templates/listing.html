@@ -1,28 +1,32 @@
 {% extends 'base.html' %}
 {% block main %}
 <h2>Play Many</h2>
-<ul data-role="listview">
-    <li data-icon="gear"><a href="{{url_for('playset')}}" class="ajax ui-btn" data-cmd=1_1>Act_1:Scene_1</a>
-    <li data-icon="gear"><a href="{{url_for('playset')}}" class="ajax ui-btn" data-cmd=2_1>Act_2:Scene_1</a>
-    <li data-icon="gear"><a href="{{url_for('playset')}}" class="ajax ui-btn" data-cmd=2_2>Act_2:Scene_2</a>
-    <li data-icon="gear"><a href="{{url_for('playset')}}" class="ajax ui-btn" data-cmd=2_3>Act_2:Scene_3</a>
-    <li data-icon="gear"><a href="{{url_for('playset')}}" class="ajax ui-btn" data-cmd=2_4>Act_2:Scene_4</a>
-    <li data-icon="gear"><a href="{{url_for('playset')}}" class="ajax ui-btn" data-cmd=3_1>Act_3:Scene_1</a>
-</ul>
+<div class="ui-body ui-body-a ui-corner-all">
+    <ul data-role="listview">
+        <li data-icon="gear"><a href="{{url_for('playset')}}" class="ajax ui-btn" data-cmd=1_1>Act_1:Scene_1</a>
+        <li data-icon="gear"><a href="{{url_for('playset')}}" class="ajax ui-btn" data-cmd=2_1>Act_2:Scene_1</a>
+        <li data-icon="gear"><a href="{{url_for('playset')}}" class="ajax ui-btn" data-cmd=2_2>Act_2:Scene_2</a>
+        <li data-icon="gear"><a href="{{url_for('playset')}}" class="ajax ui-btn" data-cmd=2_3>Act_2:Scene_3</a>
+        <li data-icon="gear"><a href="{{url_for('playset')}}" class="ajax ui-btn" data-cmd=2_4>Act_2:Scene_4</a>
+        <li data-icon="gear"><a href="{{url_for('playset')}}" class="ajax ui-btn" data-cmd=3_1>Act_3:Scene_1</a>
+    </ul>
+</div>
 <h2>Play One</h2>
-{% if title[0] %}
-<h3><a class="dir ui-btn ui-icon-arrow-l ui-btn-icon-left" href='{{url_for('explore', path=title[0])}}'>{{title[1]}}</a></h3>
-{% endif %}
-<ul data-role="listview">
-{% for base, directory in directories: %}
-<li><a class="dir" href="{{url_for('explore', path=base)}}">{{directory}}</a></li>
-{% endfor %}
-{% for base, _file, sub_exists in files: %}
-{% if sub_exists: %}
-<li data-icon="gear"><a class="dir" href="{{url_for('play', path=base)}}">{{_file}}<span class="ui-li-count">S</p></a></li>
-{% else %}
-<li data-icon="gear"><a class="dir" href="{{url_for('play', path=base)}}">{{_file}}</a></li>
-{% endif %}
-{% endfor %}
-</ul>
+<div class="ui-body ui-body-a ui-corner-all">
+    {% if title[0] %}
+    <h3><a class="dir ui-btn ui-icon-arrow-l ui-btn-icon-left" href='{{url_for('explore', path=title[0])}}'>{{title[1]}}</a></h3>
+    {% endif %}
+    <ul data-role="listview">
+    {% for base, directory in directories: %}
+    <li><a class="dir" href="{{url_for('explore', path=base)}}">{{directory}}</a></li>
+    {% endfor %}
+    {% for base, _file, sub_exists in files: %}
+    {% if sub_exists: %}
+    <li data-icon="gear"><a class="dir" href="{{url_for('play', path=base)}}">{{_file}}<span class="ui-li-count">S</p></a></li>
+    {% else %}
+    <li data-icon="gear"><a class="dir" href="{{url_for('play', path=base)}}">{{_file}}</a></li>
+    {% endif %}
+    {% endfor %}
+    </ul>
+</div>
 {% endblock %}
