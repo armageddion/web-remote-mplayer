@@ -110,15 +110,35 @@ def playset():
     vidset = request.form['cmd']
     app.logger.info("playing vidset: "+str(vidset))
     print(type(vidset))     #DEBUG
-    if vidset == '1':
-        r1 = requests.get(app.config['PROJECTOR_1']+'/play/Downloads/Hex_Original.mp4')
-        r2 = requests.get(app.config['PROJECTOR_2']+'/play/Downloads/Hex_Original.mp4')
-        r3 = requests.get(app.config['PROJECTOR_3']+'/play/Downloads/Hex_Original.mp4')
+    if vidset == '1_1':
+        r1 = requests.get(app.config['PROJECTOR_1']+'/play/01_01_01C_Tolaan_ROZ_Play_Test.mov')
+        r2 = requests.get(app.config['PROJECTOR_2']+'/play/01_02_02C_Krinu_ROZ_Play_Test.mov')
+        r3 = requests.get(app.config['PROJECTOR_3']+'/play/01_03_03C_Ubo_ROZ_Play_Test.mov')
 
-    if vidset == '2':
-        r1 = requests.get(app.config['PROJECTOR_1']+'/play/Downloads/ROZ_2_4_Tolaan_Cam_1_Test.mov')
-        r2 = requests.get(app.config['PROJECTOR_2']+'/play/Downloads/ROZ_2_4_Krinu_Cam_2_Test.mov')
-        r3 = requests.get(app.config['PROJECTOR_3']+'/play/Downloads/ROZ_2_4_Ubo_Cam_3_Test.mov')
+    if vidset == '2_1':
+        r1 = requests.get(app.config['PROJECTOR_1']+'/play/02_01_01C_Tolaan_ROZ_Play_Test.mov')
+        r2 = requests.get(app.config['PROJECTOR_2']+'/play/02_01_02C_Krinu_ROZ_Play_Test.mov')
+        r3 = requests.get(app.config['PROJECTOR_3']+'/play/02_01_03C_Ubo_ROZ_Play_Test.mov') #missing
+
+    if vidset == '2_2':
+        r1 = requests.get(app.config['PROJECTOR_1']+'/play/02_02_01C_Tolaan_ROZ_Play_Test.mov') #missing
+        r2 = requests.get(app.config['PROJECTOR_2']+'/play/02_02_02C_Krinu_ROZ_Play_Test.mov') #missing
+        r3 = requests.get(app.config['PROJECTOR_3']+'/play/02_02_03C_Ubo_ROZ_Play_Test.mov') #missing
+
+    if vidset == '2_3':
+        r1 = requests.get(app.config['PROJECTOR_1']+'/play/02_03_01C_Tolaan_ROZ_Play_Test.mov') #missing
+        r2 = requests.get(app.config['PROJECTOR_2']+'/play/02_03_02C_Krinu_ROZ_Play_Test.mov') #missing
+        r3 = requests.get(app.config['PROJECTOR_3']+'/play/02_03_03C_Ubo_ROZ_Play_Test.mov') #missing
+
+    if vidset == '2_4':
+        r1 = requests.get(app.config['PROJECTOR_1']+'/play/02_04_01C_Tolaan_ROZ_Play_Test.mov')
+        r2 = requests.get(app.config['PROJECTOR_2']+'/play/02_04_02C_Krinu_ROZ_Play_Test.mov')
+        r3 = requests.get(app.config['PROJECTOR_3']+'/play/02_04_03C_Ubo_ROZ_Play_Test.mov')
+
+    if vidset == '3_1':
+        r1 = requests.get(app.config['PROJECTOR_1']+'/play/03_01_01C_Tolaan_ROZ_Play_Test.mov') 
+        r2 = requests.get(app.config['PROJECTOR_2']+'/play/03_01_02C_Krinu_ROZ_Play_Test.mov') 
+        r3 = requests.get(app.config['PROJECTOR_3']+'/play/03_01_03C_Ubo_ROZ_Play_Test.mov') 
 
     return json.dumps({"redirect": (url_for('explore'))})
 
@@ -127,10 +147,16 @@ def playset():
 def ctrl():
     cmd = request.form['cmd']
     app.logger.info("processing ctrl command "+str(cmd))
+    if cmd == "quitall":
+        # quit all playbacks
+        requests.post(app.config['PROJECTOR_1']+'/ctrl/', data={"cmd": "quit"})
+        requests.post(app.config['PROJECTOR_2']+'/ctrl/', data={"cmd": "quit"})
+        requests.post(app.config['PROJECTOR_3']+'/ctrl/', data={"cmd": "quit"})        
     if cmd == "clean":
         # OS remove fifo file
         g.mplayer.remove_fifo()
     if cmd == "cleanall":
+        # call clean on all projectors
         requests.post(app.config['PROJECTOR_1']+'/ctrl/', data={"cmd": "clean"})
         requests.post(app.config['PROJECTOR_2']+'/ctrl/', data={"cmd": "clean"})
         requests.post(app.config['PROJECTOR_3']+'/ctrl/', data={"cmd": "clean"})
