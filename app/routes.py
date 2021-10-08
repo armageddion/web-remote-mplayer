@@ -113,7 +113,7 @@ def playset():
     if vidset == '1_1':
         r1 = requests.get(app.config['PROJECTOR_1']+'/play/Downloads/01_01_01C_Tolaan_ROZ_Play_Test.mov')
 
-    if vidset == '1_1':
+    if vidset == '1_2':
         r2 = requests.get(app.config['PROJECTOR_2']+'/play/Downloads/01_02_02C_Krinu_ROZ_Play_Test.mov')
 
     if vidset == '1_3':
