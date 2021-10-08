@@ -121,14 +121,14 @@ def playset():
         r3 = requests.get(app.config['PROJECTOR_3']+'/play/02_01_03C_Ubo_ROZ_Play_Test.mov') #missing
 
     if vidset == '2_2':
-        r1 = requests.get(app.config['PROJECTOR_1']+'/play/02_02_01C_Tolaan_ROZ_Play_Test.mov') #missing
-        r2 = requests.get(app.config['PROJECTOR_2']+'/play/02_02_02C_Krinu_ROZ_Play_Test.mov') #missing
-        r3 = requests.get(app.config['PROJECTOR_3']+'/play/02_02_03C_Ubo_ROZ_Play_Test.mov') #missing
+        r1 = requests.get(app.config['PROJECTOR_1']+'/play/02_02_01C_Tolaan_ROZ_Play_Test.mov') 
+        r2 = requests.get(app.config['PROJECTOR_2']+'/play/02_02_02C_Krinu_ROZ_Play_Test.mov') 
+        r3 = requests.get(app.config['PROJECTOR_3']+'/play/02_02_03C_Ubo_ROZ_Play_Test.mov') 
 
     if vidset == '2_3':
-        r1 = requests.get(app.config['PROJECTOR_1']+'/play/02_03_01C_Tolaan_ROZ_Play_Test.mov') #missing
-        r2 = requests.get(app.config['PROJECTOR_2']+'/play/02_03_02C_Krinu_ROZ_Play_Test.mov') #missing
-        r3 = requests.get(app.config['PROJECTOR_3']+'/play/02_03_03C_Ubo_ROZ_Play_Test.mov') #missing
+        r1 = requests.get(app.config['PROJECTOR_1']+'/play/02_03_01C_Tolaan_ROZ_Play_Test.mov')
+        r2 = requests.get(app.config['PROJECTOR_2']+'/play/02_03_02C_Krinu_ROZ_Play_Test.mov')
+        r3 = requests.get(app.config['PROJECTOR_3']+'/play/02_03_03C_Ubo_ROZ_Play_Test.mov')
 
     if vidset == '2_4':
         r1 = requests.get(app.config['PROJECTOR_1']+'/play/02_04_01C_Tolaan_ROZ_Play_Test.mov')
@@ -149,9 +149,9 @@ def ctrl():
     app.logger.info("processing ctrl command "+str(cmd))
     if cmd == "quitall":
         # quit all playbacks
-        requests.post(app.config['PROJECTOR_1']+'/ctrl/', data={"cmd": "quit"})
-        requests.post(app.config['PROJECTOR_2']+'/ctrl/', data={"cmd": "quit"})
-        requests.post(app.config['PROJECTOR_3']+'/ctrl/', data={"cmd": "quit"})        
+        requests.post(app.config['PROJECTOR_1']+'/command/', data={"cmd": "quit"})
+        requests.post(app.config['PROJECTOR_2']+'/command/', data={"cmd": "quit"})
+        requests.post(app.config['PROJECTOR_3']+'/command/', data={"cmd": "quit"})        
     if cmd == "clean":
         # OS remove fifo file
         g.mplayer.remove_fifo()
