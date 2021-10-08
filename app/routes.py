@@ -112,7 +112,11 @@ def playset():
     print(type(vidset))     #DEBUG
     if vidset == '1_1':
         r1 = requests.get(app.config['PROJECTOR_1']+'/play/01_01_01C_Tolaan_ROZ_Play_Test.mov')
+
+    if vidset == '1_1':
         r2 = requests.get(app.config['PROJECTOR_2']+'/play/01_02_02C_Krinu_ROZ_Play_Test.mov')
+
+    if vidset == '1_3':
         r3 = requests.get(app.config['PROJECTOR_3']+'/play/01_03_03C_Ubo_ROZ_Play_Test.mov')
 
     if vidset == '2_1':
