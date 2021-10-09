@@ -92,15 +92,18 @@ def controls():
 # process playback controll commands
 @app.route('/command/', methods=['POST'])
 def command():
+    redirect = False
     cmd = request.form['cmd']
     app.logger.info("processing command "+str(cmd))
-    g.mplayer.send_cmd(cmd)
-    redirect = False
-    #print('here')                                          #DEBUG
-    if cmd == "quit":
-        #print("here2")                                      #DEBUG
-        cleanup()
-        redirect = url_for('explore')
+    try:
+        g.mplayer.send_cmd(cmd)
+        if cmd == "quit":
+            cleanup()
+            redirect = url_for('explore')
+    except Exception as e:
+        app.logger.error("failed to process /ctrl/ command")
+        app.logger.error("Exception: "+str(e))
+        app.logger.warn("trying to recover")            
     return json.dumps({"redirect": redirect})
 
 # play a predefined collection of videos on all outputs at once
@@ -151,22 +154,27 @@ def playset():
 def ctrl():
     cmd = request.form['cmd']
     app.logger.info("processing ctrl command "+str(cmd))
-    if cmd == "quitall":
-        # quit all playbacks
-        requests.post(app.config['PROJECTOR_1']+'/command/', data={"cmd": "quit"})
-        requests.post(app.config['PROJECTOR_2']+'/command/', data={"cmd": "quit"})
-        requests.post(app.config['PROJECTOR_3']+'/command/', data={"cmd": "quit"})        
-    if cmd == "clean":
-        # OS remove fifo file
-        g.mplayer.remove_fifo()
-    if cmd == "cleanall":
-        # call clean on all projectors
-        requests.post(app.config['PROJECTOR_1']+'/ctrl/', data={"cmd": "clean"})
-        requests.post(app.config['PROJECTOR_2']+'/ctrl/', data={"cmd": "clean"})
-        requests.post(app.config['PROJECTOR_3']+'/ctrl/', data={"cmd": "clean"})
-    if cmd == "nuke":
-        #reboot system
-        os.system('sudo reboot')
+    try:
+        if cmd == "quitall":
+            # quit all playbacks
+            requests.post(app.config['PROJECTOR_1']+'/command/', data={"cmd": "quit"})
+            requests.post(app.config['PROJECTOR_2']+'/command/', data={"cmd": "quit"})
+            requests.post(app.config['PROJECTOR_3']+'/command/', data={"cmd": "quit"})        
+        if cmd == "clean":
+            # OS remove fifo file
+            g.mplayer.remove_fifo()
+        if cmd == "cleanall":
+            # call clean on all projectors
+            requests.post(app.config['PROJECTOR_1']+'/ctrl/', data={"cmd": "clean"})
+            requests.post(app.config['PROJECTOR_2']+'/ctrl/', data={"cmd": "clean"})
+            requests.post(app.config['PROJECTOR_3']+'/ctrl/', data={"cmd": "clean"})
+        if cmd == "nuke":
+            #reboot system
+            os.system('sudo reboot')
+    except Exception as e:
+        app.logger.error("failed to process /ctrl/ command")
+        app.logger.error("Exception: "+str(e))
+        app.logger.warn("trying to recover")
 
     return json.dumps({"redirect": (url_for('explore'))})
 
