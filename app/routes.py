@@ -101,7 +101,7 @@ def command():
             cleanup()
             redirect = url_for('explore')
     except Exception as e:
-        app.logger.error("failed to process /ctrl/ command")
+        app.logger.error("failed to process /command/ command")
         app.logger.error("Exception: "+str(e))
         app.logger.warn("trying to recover")            
     return json.dumps({"redirect": redirect})
