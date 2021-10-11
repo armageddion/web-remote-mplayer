@@ -119,6 +119,11 @@ def playset():
     if vidset == '0_2':
         r1 = requests.get(app.config['ONBOARD_TV']+'/play/Downloads/Onboarding.mov') #missing
 
+    if vidset == '1_0':
+        r1 = requests.get(app.config['PROJECTOR_1']+'/play/Downloads/01_00_1C_Tolaan_intro.mov') # missing
+        r2 = requests.get(app.config['PROJECTOR_2']+'/play/Downloads/01_00_2C_Krinu_intro.mov') # missing
+        r3 = requests.get(app.config['PROJECTOR_3']+'/play/Downloads/01_00_3C_Ubo_intro.mov') # missing
+        
     if vidset == '1_1':
         r1 = requests.get(app.config['PROJECTOR_1']+'/play/Downloads/01_01_1C_Tolaan_ROZ_C2C.mov')
         r2 = requests.get(app.config['PROJECTOR_2']+'/play/Downloads/01_01_2C_Krinu_ROZ_C2C.mov')
