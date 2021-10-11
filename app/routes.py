@@ -112,40 +112,52 @@ def command():
 def playset():
     vidset = request.form['cmd']
     app.logger.info("playing vidset: "+str(vidset))
-    print(type(vidset))     #DEBUG
+    #print(type(vidset))     #DEBUG
+    if vidset == '0_1':
+        r1 = requests.get(app.config['ONBOARD_TV']+'/play/Downloads/Onboarding.mov') #missing
+
+    if vidset == '0_2':
+        r1 = requests.get(app.config['ONBOARD_TV']+'/play/Downloads/Onboarding.mov') #missing
+
     if vidset == '1_1':
-        r1 = requests.get(app.config['PROJECTOR_1']+'/play/Downloads/01_01_01C_Tolaan_ROZ_Play_Test.mov')
+        r1 = requests.get(app.config['PROJECTOR_1']+'/play/Downloads/01_01_1C_Tolaan_ROZ_C2C.mov')
+        r2 = requests.get(app.config['PROJECTOR_2']+'/play/Downloads/01_01_2C_Krinu_ROZ_C2C.mov')
+        r3 = requests.get(app.config['PROJECTOR_3']+'/play/Downloads/01_01_3C_Ubo_ROZ_C2C.mov')        
 
     if vidset == '1_2':
-        r2 = requests.get(app.config['PROJECTOR_2']+'/play/Downloads/01_02_02C_Krinu_ROZ_Play_Test.mov')
+        r1 = requests.get(app.config['PROJECTOR_1']+'/play/Downloads/01_02_1C_Tolaan_ROZ_C2C.mov')
+        r2 = requests.get(app.config['PROJECTOR_2']+'/play/Downloads/01_02_1C_Tolaan_ROZ_C2C.mov')
+        r3 = requests.get(app.config['PROJECTOR_3']+'/play/Downloads/01_02_3C_Ubo_ROZ_C2C.mov')        
 
     if vidset == '1_3':
-        r3 = requests.get(app.config['PROJECTOR_3']+'/play/Downloads/01_03_03C_Ubo_ROZ_Play_Test.mov')
+        r1 = requests.get(app.config['PROJECTOR_1']+'/play/Downloads/01_03_1C_Tolaan_ROZ_C2C.mov')
+        r2 = requests.get(app.config['PROJECTOR_2']+'/play/Downloads/01_03_2C_Krinu_ROZ_C2C.mov')
+        r3 = requests.get(app.config['PROJECTOR_3']+'/play/Downloads/01_03_3C_Ubo_ROZ_C2C.mov')        
 
     if vidset == '2_1':
-        r1 = requests.get(app.config['PROJECTOR_1']+'/play/Downloads/02_01_01C_Tolaan_ROZ_Play_Test.mov')
-        r2 = requests.get(app.config['PROJECTOR_2']+'/play/Downloads/02_01_02C_Krinu_ROZ_Play_Test.mov')
-        r3 = requests.get(app.config['PROJECTOR_3']+'/play/Downloads/02_01_03C_Ubo_ROZ_Play_Test.mov')
+        r1 = requests.get(app.config['PROJECTOR_1']+'/play/Downloads/02_01_1C_Tolaan_ROZ_C2C.mov')
+        r2 = requests.get(app.config['PROJECTOR_2']+'/play/Downloads/02_01_2C_Krinu_ROZ_C2C.mov')
+        r3 = requests.get(app.config['PROJECTOR_3']+'/play/Downloads/02_01_3C_Ubo_ROZ_C2C.mov')
 
     if vidset == '2_2':
-        r1 = requests.get(app.config['PROJECTOR_1']+'/play/Downloads/02_02_01C_Tolaan_ROZ_Play_Test.mov') 
-        r2 = requests.get(app.config['PROJECTOR_2']+'/play/Downloads/02_02_02C_Krinu_ROZ_Play_Test.mov') 
-        r3 = requests.get(app.config['PROJECTOR_3']+'/play/Downloads/02_02_03C_Ubo_ROZ_Play_Test.mov') 
+        r1 = requests.get(app.config['PROJECTOR_1']+'/play/Downloads/02_02_1C_Tolaan_ROZ_C2C.mov') 
+        r2 = requests.get(app.config['PROJECTOR_2']+'/play/Downloads/02_02_2C_Krinu_ROZ_C2C.mov') 
+        r3 = requests.get(app.config['PROJECTOR_3']+'/play/Downloads/02_02_3C_Ubo_ROZ_C2C.mov') 
 
     if vidset == '2_3':
-        r1 = requests.get(app.config['PROJECTOR_1']+'/play/Downloads/02_03_01C_Tolaan_ROZ_Play_Test.mov')
-        r2 = requests.get(app.config['PROJECTOR_2']+'/play/Downloads/02_03_02C_Krinu_ROZ_Play_Test.mov')
-        r3 = requests.get(app.config['PROJECTOR_3']+'/play/Downloads/02_03_03C_Ubo_ROZ_Play_Test.mov')
+        r1 = requests.get(app.config['PROJECTOR_1']+'/play/Downloads/02_03_1C_Tolaan_ROZ_C2C.mov')
+        r2 = requests.get(app.config['PROJECTOR_2']+'/play/Downloads/02_03_2C_Krinu_ROZ_C2C.mov')
+        r3 = requests.get(app.config['PROJECTOR_3']+'/play/Downloads/02_03_3C_Ubo_ROZ_C2C.mov')
 
     if vidset == '2_4':
-        r1 = requests.get(app.config['PROJECTOR_1']+'/play/Downloads/02_04_01C_Tolaan_ROZ_Play_Test.mov')
-        r2 = requests.get(app.config['PROJECTOR_2']+'/play/Downloads/02_04_02C_Krinu_ROZ_Play_Test.mov')
-        r3 = requests.get(app.config['PROJECTOR_3']+'/play/Downloads/02_04_03C_Ubo_ROZ_Play_Test.mov')
+        r1 = requests.get(app.config['PROJECTOR_1']+'/play/Downloads/02_04_1C_Tolaan_ROZ_C2C.mov')
+        r2 = requests.get(app.config['PROJECTOR_2']+'/play/Downloads/02_04_2C_Krinu_ROZ_C2C.mov')
+        r3 = requests.get(app.config['PROJECTOR_3']+'/play/Downloads/02_04_3C_Ubo_ROZ_C2C.mov')
 
     if vidset == '3_1':
-        r1 = requests.get(app.config['PROJECTOR_1']+'/play/Downloads/03_01_01C_Tolaan_ROZ_Play_Test.mov') 
-        r2 = requests.get(app.config['PROJECTOR_2']+'/play/Downloads/03_01_02C_Krinu_ROZ_Play_Test.mov') 
-        r3 = requests.get(app.config['PROJECTOR_3']+'/play/Downloads/03_01_03C_Ubo_ROZ_Play_Test.mov') 
+        r1 = requests.get(app.config['PROJECTOR_1']+'/play/Downloads/03_01_1C_Tolaan_ROZ_C2C.mov') 
+        r2 = requests.get(app.config['PROJECTOR_2']+'/play/Downloads/03_01_2C_Krinu_ROZ_C2C.mov') 
+        r3 = requests.get(app.config['PROJECTOR_3']+'/play/Downloads/03_01_3C_Ubo_ROZ_C2C.mov') 
 
     return json.dumps({"redirect": (url_for('explore'))})
 
